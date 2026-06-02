@@ -1,0 +1,1207 @@
+import { useState, useEffect, useRef } from "react";
+
+const LESSONS = [
+  {
+    id: 1,
+    unit: "Unit 1",
+    title: "Present Continuous Tense",
+    sinhala_title: "වර්තමාන අඛණ්ඩ කාලය",
+    category: "Tenses",
+    level: "Basic",
+    description: "දැන් සිදුවෙමින් පවතින ක්‍රියාවන් ගැන කතා කිරීම.",
+    content: {
+      english_explanation: "The Present Continuous tense describes actions happening right now, or around the current time. It is also used for temporary situations and changes in progress.",
+      sinhala_explanation: "Present Continuous Tense භාවිතා කරන්නේ දැන් සිදුවෙමින් පවතින ක්‍රියාවන් පෙන්වීමට. 'am/is/are + verb + ing' ආකෘතිය භාවිතා කරයි.",
+      formula: "Subject + am/is/are + Verb + ing",
+      forms: [
+        { type: "Positive", formula: "Subject + am/is/are + verb-ing", example: "Nimal is studying English." },
+        { type: "Negative", formula: "Subject + am/is/are + not + verb-ing", example: "Kasuni is not cooking rice." },
+        { type: "Question", formula: "Am/Is/Are + Subject + verb-ing?", example: "Is Chamara travelling to Kandy?" },
+      ],
+      examples: [
+        { en: "Nimal is studying English.", si: "නිමල් දැන් English ඉගෙන ගනිමින් සිටී." },
+        { en: "Kasuni is cooking rice.", si: "කසුනි බත් උයමින් සිටී." },
+        { en: "Saman is travelling to Kandy.", si: "සමන් කන්ඩිය බලා ගමන් කරමින් සිටී." },
+        { en: "Dinithi is studying in Galle.", si: "දිනිති ගාල්ලේ ඉගෙනුම් ලබමින් සිටී." },
+        { en: "Chamara is playing cricket in Kurunegala.", si: "චාමර කුරුණෑගල මිදුලේ ක්‍රිකට් ක්‍රීඩා කරමින් සිටී." },
+      ],
+      notes: [
+        "am — I am going (I සමඟ පමණි)",
+        "is — He/She/It is going (third person singular)",
+        "are — You/We/They are going (ඉතිරි සියල්ලටම)",
+      ],
+      mistakes: [
+        { wrong: "She is go to school.", correct: "She is going to school." },
+        { wrong: "They is playing.", correct: "They are playing." },
+        { wrong: "I am not doing nothing.", correct: "I am not doing anything." },
+      ],
+    },
+    exercises: [
+      {
+        type: "fill",
+        instruction: "Fill in the blanks with the correct form (am/is/are + verb-ing):",
+        questions: [
+          { q: "Nimal _____ (study) for his exam.", a: "is studying" },
+          { q: "Kasuni and Dinithi _____ (cook) for the party.", a: "are cooking" },
+          { q: "I _____ (write) a letter to my friend in Matara.", a: "am writing" },
+          { q: "Chamara _____ (travel) from Kurunegala to Colombo.", a: "is travelling" },
+        ],
+      },
+      {
+        type: "mcq",
+        instruction: "Choose the correct answer:",
+        questions: [
+          { q: "Saman _____ to Anuradhapura.", options: ["go", "is going", "are going", "goes"], a: "is going" },
+          { q: "The children _____ in the Galle beach.", options: ["play", "is playing", "are playing", "played"], a: "are playing" },
+        ],
+      },
+    ],
+  },
+  {
+    id: 2,
+    unit: "Unit 2",
+    title: "Present Simple Tense",
+    sinhala_title: "සරල වර්තමාන කාලය",
+    category: "Tenses",
+    level: "Basic",
+    description: "නිතර සිදු වෙන ක්‍රියාවන් හා සත්‍ය කරුණු ගැන කතා කිරීම.",
+    content: {
+      english_explanation: "The Present Simple tense is used for habitual actions, general truths, and permanent situations. It describes things that happen regularly or are always true.",
+      sinhala_explanation: "Present Simple Tense භාවිතා කරන්නේ නිතර සිදු වෙන ක්‍රියාවන් සහ සත්‍ය කරුණු පෙන්වීමට. He/She/It සමඟ verb + s/es භාවිතා කරයි.",
+      formula: "Subject + Verb (s/es for He/She/It)",
+      forms: [
+        { type: "Positive", formula: "I/You/We/They + base verb; He/She/It + verb+s/es", example: "Nimal goes to school every day." },
+        { type: "Negative", formula: "Subject + do/does + not + base verb", example: "Kasuni doesn't live in Colombo." },
+        { type: "Question", formula: "Do/Does + Subject + base verb?", example: "Does Chamara play cricket?" },
+      ],
+      examples: [
+        { en: "Nimal goes to school in Kandy every day.", si: "නිමල් සෑම දිනකම කන්ඩිය ඇති පාසලට යයි." },
+        { en: "Chamari lives in Gampaha.", si: "චාමරී ගම්පහ ජීවත් වෙයි." },
+        { en: "The sun rises in the east.", si: "හිරු නැගෙනහිරින් නගිනවා." },
+        { en: "Amal eats rice for lunch.", si: "අමල් දවල් කෑමට බත් කනවා." },
+        { en: "Saman works in Anuradhapura.", si: "සමන් අනුරාධපුරයේ රැකියාව කරයි." },
+      ],
+      notes: [
+        "He/She/It සමඟ verb + s/es: goes, watches, studies",
+        "Do/Does — negative සහ questions සඳහා",
+        "Always, usually, often, sometimes, never — frequency adverbs",
+      ],
+      mistakes: [
+        { wrong: "He go to school.", correct: "He goes to school." },
+        { wrong: "Does he goes?", correct: "Does he go?" },
+        { wrong: "She don't like rice.", correct: "She doesn't like rice." },
+      ],
+    },
+    exercises: [
+      {
+        type: "fill",
+        instruction: "Fill in the blanks with the correct form:",
+        questions: [
+          { q: "Chamara _____ (play) cricket every weekend.", a: "plays" },
+          { q: "Nimal and Kasuni _____ (live) in Kandy.", a: "live" },
+          { q: "She _____ (not/eat) meat.", a: "doesn't eat" },
+          { q: "_____ Saman _____ (work) in Badulla? Yes, he does.", a: "Does ... work" },
+        ],
+      },
+      {
+        type: "mcq",
+        instruction: "Choose the correct answer:",
+        questions: [
+          { q: "Dinithi _____ to Galle every Friday.", options: ["go", "goes", "is going", "went"], a: "goes" },
+          { q: "They _____ rice every day.", options: ["eats", "eating", "eat", "ate"], a: "eat" },
+        ],
+      },
+    ],
+  },
+  {
+    id: 3,
+    unit: "Unit 3",
+    title: "Past Simple Tense",
+    sinhala_title: "සරල අතීත කාලය",
+    category: "Tenses",
+    level: "Basic",
+    description: "අතීතයේ සිදු වූ ක්‍රියාවන් ගැන කතා කිරීම.",
+    content: {
+      english_explanation: "The Past Simple tense is used for actions completed in the past, often with a specific time reference.",
+      sinhala_explanation: "Past Simple Tense භාවිතා කරන්නේ අතීතයේ නිම වූ ක්‍රියාවන් ගැන කතා කිරීමට. Regular verbs: verb + ed. Irregular verbs: go→went, eat→ate.",
+      formula: "Subject + Verb (past form / ed)",
+      forms: [
+        { type: "Positive", formula: "Subject + verb-ed / irregular past", example: "Nimal visited Polonnaruwa last year." },
+        { type: "Negative", formula: "Subject + did not + base verb", example: "Kasuni didn't cook yesterday." },
+        { type: "Question", formula: "Did + Subject + base verb?", example: "Did Chamara go to Badulla?" },
+      ],
+      examples: [
+        { en: "Nimal visited Polonnaruwa last year.", si: "නිමල් පසුගිය වසරේ පොළොන්නරුවට ගියා." },
+        { en: "Kasuni cooked rice this morning.", si: "කසුනි අද උදෑසන බත් ඉවුලා." },
+        { en: "Saman worked in Anuradhapura for five years.", si: "සමන් අවුරුදු පහක් අනුරාධපුරයේ රැකියා කළා." },
+        { en: "Dinithi studied at Galle National College.", si: "දිනිති ගාල්ල ජාතික විද්‍යාලයේ ඉගෙනුම් ලැබුවා." },
+      ],
+      notes: [
+        "Regular verbs: add -ed (worked, played, cooked)",
+        "Irregular verbs: go→went, eat→ate, see→saw, take→took",
+        "Yesterday, last week, in 2020 — past time expressions",
+      ],
+      mistakes: [
+        { wrong: "He goed to Kandy.", correct: "He went to Kandy." },
+        { wrong: "Did she went?", correct: "Did she go?" },
+        { wrong: "I didn't ate.", correct: "I didn't eat." },
+      ],
+    },
+    exercises: [
+      {
+        type: "fill",
+        instruction: "Fill in the blanks using Past Simple:",
+        questions: [
+          { q: "Nimal _____ (visit) Kandy last month.", a: "visited" },
+          { q: "Chamara _____ (go) to Kurunegala by bus.", a: "went" },
+          { q: "Kasuni _____ (not/cook) dinner last night.", a: "didn't cook" },
+        ],
+      },
+      {
+        type: "mcq",
+        instruction: "Choose the correct answer:",
+        questions: [
+          { q: "She _____ to Galle last weekend.", options: ["go", "goes", "went", "gone"], a: "went" },
+          { q: "Did they _____ the cricket match?", options: ["watched", "watch", "watches", "watching"], a: "watch" },
+        ],
+      },
+    ],
+  },
+  {
+    id: 4,
+    unit: "Unit 4",
+    title: "Future Tense (will / going to)",
+    sinhala_title: "අනාගත කාලය",
+    category: "Tenses",
+    level: "Basic",
+    description: "අනාගතයේ සිදු වෙනු ඇති ක්‍රියාවන් ගැන කතා කිරීම.",
+    content: {
+      english_explanation: "We use 'will' for predictions and spontaneous decisions. We use 'going to' for planned intentions and predictions based on evidence.",
+      sinhala_explanation: "Will — ක්ෂණික තීරණ සහ predictions. Going to — කලින් සැලසුම් කළ ක්‍රියාවන්.",
+      formula: "Subject + will + base verb / Subject + am/is/are + going to + base verb",
+      forms: [
+        { type: "Will (positive)", formula: "Subject + will + base verb", example: "Nimal will visit Kandy." },
+        { type: "Will (negative)", formula: "Subject + will not/won't + base verb", example: "Kasuni won't be late." },
+        { type: "Going to (positive)", formula: "Subject + am/is/are going to + base verb", example: "Chamara is going to study medicine." },
+      ],
+      examples: [
+        { en: "Nimal will go to Colombo tomorrow.", si: "නිමල් හෙට කොළඹ යයි." },
+        { en: "Kasuni is going to cook rice for the party.", si: "කසුනි සාදයට බත් උයන්නට යනවා." },
+        { en: "It will rain in Galle tonight.", si: "රාත්‍රියේ ගාල්ලේ වැස්ස ඇද හැලෙයි." },
+        { en: "Dinithi is going to become a teacher.", si: "දිනිති ගුරුවරියක් වෙන්නට යනවා." },
+      ],
+      notes: [
+        "Will — spontaneous decision: 'I'll help you.'",
+        "Going to — plan: 'I'm going to study tonight.'",
+        "Tomorrow, next week, in the future — future time expressions",
+      ],
+      mistakes: [
+        { wrong: "I will to go.", correct: "I will go." },
+        { wrong: "She is going study.", correct: "She is going to study." },
+        { wrong: "Will you coming?", correct: "Will you come?" },
+      ],
+    },
+    exercises: [
+      {
+        type: "fill",
+        instruction: "Fill in with will or going to:",
+        questions: [
+          { q: "Look at the clouds! It _____ (rain).", a: "is going to rain" },
+          { q: "I think Nimal _____ (win) the competition.", a: "will win" },
+          { q: "Kasuni _____ (study) medicine next year. She already applied.", a: "is going to study" },
+        ],
+      },
+      {
+        type: "mcq",
+        instruction: "Choose the correct answer:",
+        questions: [
+          { q: "I forgot my pen. Don't worry, I _____ lend you mine.", options: ["am going to", "will", "would", "am"], a: "will" },
+          { q: "Chamara has already bought tickets. He _____ go to Badulla.", options: ["will", "is going to", "goes", "went"], a: "is going to" },
+        ],
+      },
+    ],
+  },
+  {
+    id: 5,
+    unit: "Unit 5",
+    title: "Articles (a, an, the)",
+    sinhala_title: "Articles (a, an, the)",
+    category: "Articles",
+    level: "Basic",
+    description: "Nouns වලට පෙර a, an, the භාවිතය.",
+    content: {
+      english_explanation: "Articles are used before nouns. 'A' is used before consonant sounds, 'an' before vowel sounds. 'The' is the definite article used for specific things.",
+      sinhala_explanation: "A/An — නිශ්චිත නොවන (අපිරිසිදු) nouns සමඟ. The — නිශ්චිත (specific) nouns සමඟ. Vowel (a,e,i,o,u) sound සමඟ 'an' භාවිතා කරයි.",
+      formula: "a + consonant sound | an + vowel sound | the + specific noun",
+      forms: [
+        { type: "A", formula: "a + consonant sound noun", example: "a book, a cat, a school" },
+        { type: "An", formula: "an + vowel sound noun", example: "an apple, an egg, an umbrella" },
+        { type: "The", formula: "the + specific/known noun", example: "the book on the table" },
+      ],
+      examples: [
+        { en: "Nimal has a dog in Kandy.", si: "නිමල්ට කන්ඩිය ගෙදර බලු කෙනෙකු ඉන්නවා." },
+        { en: "Kasuni found an umbrella.", si: "කසුනිට කුඩාවක් හමු වුණා." },
+        { en: "The temple in Anuradhapura is famous.", si: "අනුරාධපුරයේ දේවාලය ප්‍රසිද්ධයි." },
+        { en: "Chamara ate an orange.", si: "චාමර දොඩමක් කෑවා." },
+        { en: "Dinithi lives near the Galle Fort.", si: "දිනිති ගාල්ල කොටුව අසල ජීවත් වෙනවා." },
+      ],
+      notes: [
+        "'an hour' — h silent, vowel sound, so 'an'",
+        "'a university' — 'yu' sound, not vowel, so 'a'",
+        "Second mention: 'I saw a cat. The cat was black.'",
+      ],
+      mistakes: [
+        { wrong: "I have an book.", correct: "I have a book." },
+        { wrong: "She is a engineer.", correct: "She is an engineer." },
+        { wrong: "The life is beautiful.", correct: "Life is beautiful." },
+      ],
+    },
+    exercises: [
+      {
+        type: "fill",
+        instruction: "Fill in with a, an, or the:",
+        questions: [
+          { q: "Nimal has _____ bicycle.", a: "a" },
+          { q: "She ate _____ apple from the garden.", a: "an" },
+          { q: "_____ Kandy Temple is very beautiful.", a: "The" },
+          { q: "Chamara is _____ engineer.", a: "an" },
+        ],
+      },
+      {
+        type: "mcq",
+        instruction: "Choose the correct article:",
+        questions: [
+          { q: "She found _____ old coin in Polonnaruwa.", options: ["a", "an", "the", "no article"], a: "an" },
+          { q: "Saman visited _____ museum in Colombo.", options: ["a", "an", "the", "no article"], a: "a" },
+        ],
+      },
+    ],
+  },
+  {
+    id: 6,
+    unit: "Unit 6",
+    title: "Prepositions (in, on, at)",
+    sinhala_title: "Prepositions — ස්ථාන සහ කාලය",
+    category: "Prepositions",
+    level: "Intermediate",
+    description: "ස්ථාන, කාලය, සහ දිශා පෙන්වීමට prepositions භාවිතය.",
+    content: {
+      english_explanation: "Prepositions show relationships between nouns. 'In' is used for large areas/months/years. 'On' for days/surfaces. 'At' for specific times/places.",
+      sinhala_explanation: "IN — විශාල ස්ථාන, මාස, වසර. ON — දිනයන්, surface. AT — නිශ්චිත ස්ථාන, කාල.",
+      formula: "in + large place/month/year | on + day/surface | at + specific time/place",
+      forms: [
+        { type: "IN", formula: "in + city/country/year/month", example: "Nimal lives in Kandy. / in January / in 2024" },
+        { type: "ON", formula: "on + day/date/surface", example: "Kasuni plays on Sundays. / on the table" },
+        { type: "AT", formula: "at + specific time/address/place", example: "Chamara arrives at 8 o'clock. / at school" },
+      ],
+      examples: [
+        { en: "Nimal lives in Kandy.", si: "නිමල් කන්ඩිය ජීවත් වෙනවා." },
+        { en: "Kasuni was born in Matara.", si: "කසුනි මාතරදී ඉපදුනා." },
+        { en: "The class starts at 8 o'clock.", si: "පන්තිය 8 ට පටන් ගනිනවා." },
+        { en: "Saman studies on weekdays.", si: "සමන් සතියේ දිනවල ඉගෙනගනිනවා." },
+        { en: "Dinithi lives at 25 Galle Road.", si: "දිනිති ගාල්ල පාර 25 ගෙදර ජීවත් වෙනවා." },
+      ],
+      notes: [
+        "in the morning / in the afternoon / in the evening",
+        "at night / at noon / at midnight",
+        "on Monday / on my birthday",
+      ],
+      mistakes: [
+        { wrong: "I live at Kandy.", correct: "I live in Kandy." },
+        { wrong: "She comes in Monday.", correct: "She comes on Monday." },
+        { wrong: "He wakes up on 6 o'clock.", correct: "He wakes up at 6 o'clock." },
+      ],
+    },
+    exercises: [
+      {
+        type: "fill",
+        instruction: "Fill in with in, on, or at:",
+        questions: [
+          { q: "Nimal was born _____ 2005.", a: "in" },
+          { q: "The match is _____ Sunday.", a: "on" },
+          { q: "Kasuni arrives _____ 7 AM.", a: "at" },
+          { q: "She lives _____ Galle.", a: "in" },
+        ],
+      },
+      {
+        type: "mcq",
+        instruction: "Choose the correct preposition:",
+        questions: [
+          { q: "Chamara was born _____ April.", options: ["in", "on", "at", "by"], a: "in" },
+          { q: "The bus leaves _____ 6:30.", options: ["in", "on", "at", "to"], a: "at" },
+        ],
+      },
+    ],
+  },
+  {
+    id: 7,
+    unit: "Unit 7",
+    title: "Comparatives and Superlatives",
+    sinhala_title: "Comparative සහ Superlative",
+    category: "Adjectives",
+    level: "Intermediate",
+    description: "දෙදෙනෙකු හෝ දෙතැනක් සංසන්දනය කිරීම.",
+    content: {
+      english_explanation: "Comparatives compare two things (taller than). Superlatives describe the extreme in a group (the tallest). Short adjectives add -er/-est; long adjectives use more/most.",
+      sinhala_explanation: "Comparative — දෙදෙනෙකු සංසන්දනය: tall → taller than. Superlative — කණ්ඩායමේ ඉහළම/ගොඩාක් ම: tall → the tallest.",
+      formula: "Short adj: +er/+est | Long adj: more.../the most...",
+      forms: [
+        { type: "Comparative", formula: "Adjective + er + than / more + adj + than", example: "Nimal is taller than Saman." },
+        { type: "Superlative", formula: "the + adjective + est / the most + adj", example: "Kandy is the most beautiful city." },
+        { type: "Irregular", formula: "good→better→best | bad→worse→worst", example: "Kasuni is the best student." },
+      ],
+      examples: [
+        { en: "Nimal is taller than Saman.", si: "නිමල් සමන්ගෙන් උස්සයි." },
+        { en: "Kandy is more beautiful than Colombo.", si: "කන්ඩිය කොළඹට වඩා ලස්සනයි." },
+        { en: "Dinithi is the smartest student in Galle.", si: "දිනිති ගාල්ලේ ප්‍රශස්ත ශිෂ්‍යයා." },
+        { en: "This is the most expensive restaurant in Kurunegala.", si: "මේ කුරුණෑගලේ ගොඩාකම් අධිකාරම අවන්හල." },
+      ],
+      notes: [
+        "Short (1-2 syllable): tall→taller→tallest",
+        "Long (3+ syllable): expensive→more expensive→most expensive",
+        "Irregular: good/better/best, bad/worse/worst, far/farther/farthest",
+      ],
+      mistakes: [
+        { wrong: "She is more taller.", correct: "She is taller." },
+        { wrong: "This is most beautiful.", correct: "This is the most beautiful." },
+        { wrong: "He is more better than her.", correct: "He is better than her." },
+      ],
+    },
+    exercises: [
+      {
+        type: "fill",
+        instruction: "Fill in with comparative or superlative:",
+        questions: [
+          { q: "Anuradhapura is _____ (old) than Colombo.", a: "older" },
+          { q: "Nimal is _____ (tall) student in the class.", a: "the tallest" },
+          { q: "This road is _____ (long) than the other one.", a: "longer" },
+        ],
+      },
+      {
+        type: "mcq",
+        instruction: "Choose the correct form:",
+        questions: [
+          { q: "Galle is _____ city in the south.", options: ["most beautiful", "the most beautiful", "more beautiful", "beautifulest"], a: "the most beautiful" },
+          { q: "Kasuni scored _____ marks than Chamara.", options: ["higher", "highest", "more higher", "high"], a: "higher" },
+        ],
+      },
+    ],
+  },
+  {
+    id: 8,
+    unit: "Unit 8",
+    title: "Modal Verbs (can, must, should)",
+    sinhala_title: "Modal Verbs — can, must, should",
+    category: "Modals",
+    level: "Intermediate",
+    description: "හැකියාව, අවශ්‍යතාව, සහ උපදෙස් ගැන කතා කිරීම.",
+    content: {
+      english_explanation: "Modal verbs express ability, obligation, advice, and permission. They are followed by the base form of the verb.",
+      sinhala_explanation: "Can — හැකිනම, ability. Must — කළ යුතුමය, strong obligation. Should — කළ යුතු, advice. Modal verbs + base verb (infinitive without to).",
+      formula: "Subject + modal (can/must/should) + base verb",
+      forms: [
+        { type: "Can (ability)", formula: "Subject + can + base verb", example: "Nimal can speak English." },
+        { type: "Must (obligation)", formula: "Subject + must + base verb", example: "You must study hard." },
+        { type: "Should (advice)", formula: "Subject + should + base verb", example: "Kasuni should see a doctor." },
+      ],
+      examples: [
+        { en: "Nimal can speak English and Sinhala.", si: "නිමල්ට ඉංග්‍රීසි සහ සිංහල කතා කළ හැකිය." },
+        { en: "You must wear a helmet in Sri Lanka.", si: "ශ්‍රී ලංකාවේ හෙල්මෙට් පළඳින්නත් ඕනෑ." },
+        { en: "Chamara should eat healthy food.", si: "චාමර සෞඛ්‍ය ආහාර ගත යුතුය." },
+        { en: "Students must respect their teachers.", si: "ශිෂ්‍යයන් ගුරුවරුන්ට ගරු කළ යුතුය." },
+      ],
+      notes: [
+        "Modal verbs have no -s, -ing, or -ed forms",
+        "Can't / Cannot / Mustn't / Shouldn't — negative forms",
+        "Could — past of can; Would — polite requests",
+      ],
+      mistakes: [
+        { wrong: "She cans swim.", correct: "She can swim." },
+        { wrong: "You must to study.", correct: "You must study." },
+        { wrong: "He should goes to bed early.", correct: "He should go to bed early." },
+      ],
+    },
+    exercises: [
+      {
+        type: "fill",
+        instruction: "Fill in with can, must, or should:",
+        questions: [
+          { q: "Dinithi _____ play the violin very well.", a: "can" },
+          { q: "You _____ brush your teeth twice a day.", a: "should" },
+          { q: "Students _____ not talk during the exam.", a: "must" },
+        ],
+      },
+      {
+        type: "mcq",
+        instruction: "Choose the correct modal:",
+        questions: [
+          { q: "If you feel sick, you _____ see a doctor.", options: ["can", "must", "should", "might"], a: "should" },
+          { q: "Nimal _____ speak three languages.", options: ["must", "can", "should", "has"], a: "can" },
+        ],
+      },
+    ],
+  },
+];
+
+const CATEGORIES = ["All", "Tenses", "Articles", "Prepositions", "Adjectives", "Modals"];
+const LEVELS = ["All", "Basic", "Intermediate", "Advanced"];
+
+const REVIEWS = [
+  { name: "Nimal (Kandy)", text: "මේ website එකෙන් ඉංග්‍රීසි ගැනීමෙන් පස්සේ ඒ.ළ.උ. exam ලකුණු ගොඩ දෙකෙන් ඉහළ ගියා!", stars: 5 },
+  { name: "Kasuni (Matara)", text: "සිංහලෙන් පැහැදිලි කිරීම් නිසා grammar rules ලේසියෙන් තේරුණා. ස්තූතියි Harry Sir!", stars: 5 },
+  { name: "Chamara (Kurunegala)", text: "Interactive exercises ගොඩක් ප්‍රයෝජනවත්. ගෙදරදී practice කරන්න පුළුවන්.", stars: 5 },
+  { name: "Dinithi (Galle)", text: "Sinhala examples නිසා grammar ඉක්මනින් දැනෙයි. Best English website!", stars: 4 },
+  { name: "Saman (Anuradhapura)", text: "School ළමුන්ට ගොඩ ගැනෙන website. ගමේ ළමයිත් දැන් ලේසියෙන් ඉගෙනගනිනවා.", stars: 5 },
+];
+
+function StarRating({ stars }) {
+  return (
+    <div style={{ display: "flex", gap: 2, marginBottom: 6 }}>
+      {[1, 2, 3, 4, 5].map(i => (
+        <span key={i} style={{ color: i <= stars ? "#f59e0b" : "#d1d5db", fontSize: 16 }}>★</span>
+      ))}
+    </div>
+  );
+}
+
+function Badge({ label, color = "#1d4ed8" }) {
+  const colors = {
+    Basic: { bg: "#dbeafe", text: "#1e40af" },
+    Intermediate: { bg: "#fef3c7", text: "#92400e" },
+    Advanced: { bg: "#fce7f3", text: "#9d174d" },
+    Tenses: { bg: "#e0f2fe", text: "#0369a1" },
+    Articles: { bg: "#d1fae5", text: "#065f46" },
+    Prepositions: { bg: "#ede9fe", text: "#5b21b6" },
+    Adjectives: { bg: "#fef9c3", text: "#854d0e" },
+    Modals: { bg: "#fee2e2", text: "#991b1b" },
+  };
+  const c = colors[label] || { bg: "#e5e7eb", text: "#374151" };
+  return (
+    <span style={{
+      background: c.bg, color: c.text,
+      fontSize: 11, fontWeight: 600, padding: "2px 8px",
+      borderRadius: 20, letterSpacing: 0.3,
+    }}>{label}</span>
+  );
+}
+
+function Nav({ page, setPage, dark, setDark, search, setSearch }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const links = [
+    { id: "home", label: "නිවස" },
+    { id: "lessons", label: "Lessons" },
+    { id: "exercises", label: "Exercises" },
+    { id: "about", label: "About" },
+    { id: "contact", label: "Contact" },
+  ];
+  return (
+    <nav style={{
+      background: dark ? "#1e293b" : "#fff",
+      borderBottom: `1px solid ${dark ? "#334155" : "#e2e8f0"}`,
+      position: "sticky", top: 0, zIndex: 100,
+      boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+    }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 16px", display: "flex", alignItems: "center", height: 60, gap: 16 }}>
+        <div onClick={() => setPage("home")} style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+          <div style={{ width: 34, height: 34, background: "linear-gradient(135deg,#1d4ed8,#06b6d4)", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 700, fontSize: 14 }}>HP</div>
+          <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.2 }}>
+            <span style={{ fontWeight: 700, fontSize: 13, color: dark ? "#f1f5f9" : "#1e3a5f" }}>Harry Perera's</span>
+            <span style={{ fontSize: 10, color: dark ? "#94a3b8" : "#64748b" }}>English Academy</span>
+          </div>
+        </div>
+        <div style={{ flex: 1, maxWidth: 260 }}>
+          <input
+            value={search} onChange={e => setSearch(e.target.value)}
+            placeholder="Lessons සොයන්න..."
+            style={{
+              width: "100%", padding: "6px 12px", borderRadius: 20,
+              border: `1px solid ${dark ? "#475569" : "#cbd5e1"}`,
+              background: dark ? "#0f172a" : "#f8fafc",
+              color: dark ? "#f1f5f9" : "#1e293b",
+              fontSize: 13, outline: "none",
+            }}
+          />
+        </div>
+        <div style={{ display: "flex", gap: 4, marginLeft: "auto", alignItems: "center" }}>
+          {links.map(l => (
+            <button key={l.id} onClick={() => { setPage(l.id); setMenuOpen(false); }} style={{
+              background: page === l.id ? "#1d4ed8" : "transparent",
+              color: page === l.id ? "#fff" : (dark ? "#cbd5e1" : "#475569"),
+              border: "none", borderRadius: 6, padding: "6px 10px", fontSize: 12,
+              cursor: "pointer", fontWeight: 500, display: window.innerWidth < 600 ? "none" : "block",
+            }}>{l.label}</button>
+          ))}
+          <button onClick={() => setDark(!dark)} style={{
+            background: dark ? "#334155" : "#f1f5f9", border: "none",
+            borderRadius: 6, padding: "6px 10px", cursor: "pointer", fontSize: 14,
+            color: dark ? "#fbbf24" : "#475569",
+          }}>{dark ? "☀️" : "🌙"}</button>
+          <button onClick={() => setMenuOpen(!menuOpen)} style={{
+            background: "transparent", border: "none", cursor: "pointer",
+            fontSize: 20, color: dark ? "#cbd5e1" : "#475569",
+            display: window.innerWidth >= 600 ? "none" : "block",
+          }}>☰</button>
+        </div>
+      </div>
+      {menuOpen && (
+        <div style={{ background: dark ? "#1e293b" : "#fff", borderTop: `1px solid ${dark ? "#334155" : "#e2e8f0"}`, padding: "8px 16px" }}>
+          {links.map(l => (
+            <button key={l.id} onClick={() => { setPage(l.id); setMenuOpen(false); }} style={{
+              display: "block", width: "100%", textAlign: "left",
+              background: "transparent", border: "none", padding: "8px 4px",
+              color: dark ? "#cbd5e1" : "#475569", fontSize: 14, cursor: "pointer",
+            }}>{l.label}</button>
+          ))}
+        </div>
+      )}
+    </nav>
+  );
+}
+
+function HomePage({ setPage, dark }) {
+  const features = [
+    { icon: "📚", title: "සරල Sinhala", desc: "සෑම grammar lesson එකක්ම සරල සිංහලෙන් පැහැදිලි කළ." },
+    { icon: "🇱🇰", title: "Sri Lankan Examples", desc: "Nimal, Kasuni, Chamara, Kandy, Galle — ඔබ දන්නා නාම." },
+    { icon: "✏️", title: "Interactive Exercises", desc: "Fill in blanks, MCQ, error correction — practice කරන්න." },
+    { icon: "📱", title: "Mobile Friendly", desc: "Phone, tablet, computer — ඕනෑ device එකෙන් ඉගෙනගන්න." },
+  ];
+  const gradients = ["#1d4ed8", "#06b6d4", "#7c3aed", "#059669", "#dc2626", "#d97706", "#db2777", "#0891b2"];
+  return (
+    <div>
+      {/* Hero */}
+      <div style={{
+        background: dark
+          ? "linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0c4a6e 100%)"
+          : "linear-gradient(135deg, #1d4ed8 0%, #06b6d4 60%, #0ea5e9 100%)",
+        padding: "72px 16px 80px", textAlign: "center", color: "#fff", position: "relative", overflow: "hidden",
+      }}>
+        <div style={{ position: "absolute", top: -60, right: -60, width: 300, height: 300, borderRadius: "50%", background: "rgba(255,255,255,0.05)" }} />
+        <div style={{ position: "absolute", bottom: -40, left: -40, width: 200, height: 200, borderRadius: "50%", background: "rgba(255,255,255,0.05)" }} />
+        <div style={{ maxWidth: 700, margin: "0 auto", position: "relative" }}>
+          <div style={{ display: "inline-block", background: "rgba(255,255,255,0.15)", padding: "4px 14px", borderRadius: 20, fontSize: 12, marginBottom: 16, backdropFilter: "blur(4px)" }}>
+            🇱🇰 Sri Lankan Students සඳහා
+          </div>
+          <h1 style={{ fontSize: "clamp(26px,5vw,44px)", fontWeight: 800, margin: "0 0 12px", lineHeight: 1.2, fontFamily: "'Segoe UI', sans-serif" }}>
+            Welcome to<br />
+            <span style={{ color: "#fde68a" }}>Harry Perera's English Academy</span>
+          </h1>
+          <p style={{ fontSize: "clamp(16px,2.5vw,22px)", margin: "0 0 32px", opacity: 0.9, fontFamily: "'Noto Sans Sinhala', 'Iskoola Pota', sans-serif" }}>
+            සරල සිංහලෙන් English Grammar ඉගෙන ගනිමු
+          </p>
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <button onClick={() => {
+              document.getElementById('lessons-section')?.scrollIntoView({ behavior: 'smooth' });
+            }} style={{
+              background: "#fff", color: "#1d4ed8", border: "none",
+              padding: "13px 28px", borderRadius: 30, fontWeight: 700, fontSize: 15, cursor: "pointer",
+            }}>🚀 Start Learning</button>
+            <button onClick={() => {
+              document.getElementById('lessons-section')?.scrollIntoView({ behavior: 'smooth' });
+            }} style={{
+              background: "transparent", color: "#fff", border: "2px solid rgba(255,255,255,0.5)",
+              padding: "13px 28px", borderRadius: 30, fontWeight: 600, fontSize: 15, cursor: "pointer",
+            }}>📖 View Lessons</button>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 16px" }}>
+        {/* Stats */}
+        <div style={{
+          display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 12,
+          background: dark ? "#1e293b" : "#fff", borderRadius: 14, padding: 20, margin: "-28px 0 0",
+          boxShadow: "0 4px 24px rgba(0,0,0,0.1)", position: "relative", zIndex: 1,
+        }}>
+          {[["145+", "Grammar Units"], ["8", "Lessons Available"], ["40+", "Practice Exercises"], ["5000+", "Students Helped"]].map(([n, l]) => (
+            <div key={l} style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 26, fontWeight: 800, color: "#1d4ed8" }}>{n}</div>
+              <div style={{ fontSize: 12, color: dark ? "#94a3b8" : "#64748b", marginTop: 2 }}>{l}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Why Learn */}
+        <div style={{ padding: "56px 0 0" }}>
+          <h2 style={{ textAlign: "center", fontSize: 26, fontWeight: 700, marginBottom: 6, color: dark ? "#f1f5f9" : "#1e293b" }}>ඇයි Harry Perera's Academy?</h2>
+          <p style={{ textAlign: "center", color: dark ? "#94a3b8" : "#64748b", marginBottom: 36, fontSize: 15 }}>Sri Lankan students සඳහා විශේෂ ලෙස සකස් කළ English learning platform.</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16 }}>
+            {features.map(f => (
+              <div key={f.title} style={{
+                background: dark ? "#1e293b" : "#fff", borderRadius: 12, padding: "24px 20px",
+                border: `1px solid ${dark ? "#334155" : "#e2e8f0"}`,
+                transition: "transform 0.2s",
+              }}>
+                <div style={{ fontSize: 32, marginBottom: 12 }}>{f.icon}</div>
+                <h3 style={{ fontWeight: 700, fontSize: 15, marginBottom: 8, color: dark ? "#f1f5f9" : "#1e293b" }}>{f.title}</h3>
+                <p style={{ color: dark ? "#94a3b8" : "#64748b", fontSize: 13, lineHeight: 1.6, margin: 0 }}>{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Featured Lessons */}
+        <div id="lessons-section" style={{ padding: "56px 0 0" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+            <h2 style={{ fontSize: 24, fontWeight: 700, margin: 0, color: dark ? "#f1f5f9" : "#1e293b" }}>Featured Grammar Lessons</h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: 16 }}>
+            {LESSONS.slice(0, 6).map((lesson, i) => (
+              <div key={lesson.id} style={{
+                background: dark ? "#1e293b" : "#fff", borderRadius: 12, padding: 20,
+                border: `1px solid ${dark ? "#334155" : "#e2e8f0"}`,
+                cursor: "pointer", transition: "box-shadow 0.2s",
+              }}
+                onClick={() => {
+                  window.selectedLesson = lesson;
+                  window.dispatchEvent(new CustomEvent('selectLesson', { detail: lesson }));
+                }}
+              >
+                <div style={{
+                  width: 40, height: 40, borderRadius: 10, marginBottom: 12,
+                  background: `linear-gradient(135deg, ${gradients[i % gradients.length]}, ${gradients[(i + 2) % gradients.length]})`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  color: "#fff", fontWeight: 700, fontSize: 12,
+                }}>{lesson.unit.replace("Unit ", "U")}</div>
+                <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
+                  <Badge label={lesson.category} />
+                  <Badge label={lesson.level} />
+                </div>
+                <h3 style={{ fontWeight: 700, fontSize: 14, marginBottom: 4, color: dark ? "#f1f5f9" : "#1e293b" }}>{lesson.title}</h3>
+                <p style={{ fontSize: 12, color: dark ? "#94a3b8" : "#64748b", margin: "0 0 12px", fontFamily: "'Noto Sans Sinhala', sans-serif", lineHeight: 1.5 }}>{lesson.description}</p>
+                <div style={{ fontSize: 12, color: "#1d4ed8", fontWeight: 600 }}>Read More →</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Reviews */}
+        <div style={{ padding: "56px 0" }}>
+          <h2 style={{ textAlign: "center", fontSize: 24, fontWeight: 700, marginBottom: 32, color: dark ? "#f1f5f9" : "#1e293b" }}>ශිෂ්‍ය Reviews</h2>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 14 }}>
+            {REVIEWS.map(r => (
+              <div key={r.name} style={{
+                background: dark ? "#1e293b" : "#fff", borderRadius: 12, padding: 18,
+                border: `1px solid ${dark ? "#334155" : "#e2e8f0"}`,
+              }}>
+                <StarRating stars={r.stars} />
+                <p style={{ fontSize: 13, color: dark ? "#cbd5e1" : "#374151", margin: "0 0 12px", lineHeight: 1.6, fontFamily: "'Noto Sans Sinhala', sans-serif" }}>"{r.text}"</p>
+                <div style={{ fontWeight: 700, fontSize: 13, color: dark ? "#93c5fd" : "#1d4ed8" }}>{r.name}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LessonDetail({ lesson, dark, onBack }) {
+  const [tab, setTab] = useState("lesson");
+  return (
+    <div style={{ maxWidth: 800, margin: "0 auto", padding: "24px 16px" }}>
+      <button onClick={onBack} style={{
+        background: "transparent", border: `1px solid ${dark ? "#475569" : "#cbd5e1"}`,
+        color: dark ? "#94a3b8" : "#64748b", borderRadius: 8, padding: "6px 14px",
+        cursor: "pointer", fontSize: 13, marginBottom: 20,
+      }}>← ආපසු</button>
+
+      <div style={{ background: dark ? "#1e293b" : "#fff", borderRadius: 14, padding: 28, border: `1px solid ${dark ? "#334155" : "#e2e8f0"}` }}>
+        <div style={{ display: "flex", gap: 8, marginBottom: 12, flexWrap: "wrap" }}>
+          <Badge label={lesson.category} />
+          <Badge label={lesson.level} />
+          <span style={{ fontSize: 12, color: dark ? "#94a3b8" : "#64748b" }}>{lesson.unit}</span>
+        </div>
+        <h1 style={{ fontSize: 24, fontWeight: 800, margin: "0 0 4px", color: dark ? "#f1f5f9" : "#1e293b" }}>{lesson.title}</h1>
+        <p style={{ fontSize: 15, color: dark ? "#94a3b8" : "#64748b", margin: "0 0 24px", fontFamily: "'Noto Sans Sinhala', sans-serif" }}>{lesson.sinhala_title}</p>
+
+        <div style={{ display: "flex", gap: 8, marginBottom: 24, borderBottom: `1px solid ${dark ? "#334155" : "#e2e8f0"}`, paddingBottom: 0 }}>
+          {["lesson", "exercises"].map(t => (
+            <button key={t} onClick={() => setTab(t)} style={{
+              background: "transparent", border: "none", padding: "8px 16px",
+              cursor: "pointer", fontSize: 14, fontWeight: 600,
+              color: tab === t ? "#1d4ed8" : (dark ? "#94a3b8" : "#64748b"),
+              borderBottom: tab === t ? "2px solid #1d4ed8" : "2px solid transparent",
+            }}>{t === "lesson" ? "📖 Grammar Lesson" : "✏️ Exercises"}</button>
+          ))}
+        </div>
+
+        {tab === "lesson" && (
+          <div>
+            {/* Sinhala explanation */}
+            <div style={{ background: dark ? "#0f172a" : "#eff6ff", borderRadius: 10, padding: 16, marginBottom: 20, borderLeft: "4px solid #1d4ed8" }}>
+              <div style={{ fontWeight: 700, color: "#1d4ed8", fontSize: 13, marginBottom: 8 }}>සිංහලෙන් පැහැදිලි කිරීම</div>
+              <p style={{ margin: 0, color: dark ? "#cbd5e1" : "#374151", fontFamily: "'Noto Sans Sinhala', sans-serif", fontSize: 14, lineHeight: 1.7 }}>{lesson.content.sinhala_explanation}</p>
+            </div>
+
+            {/* Formula */}
+            <div style={{ background: dark ? "#1a1a2e" : "#fef3c7", borderRadius: 10, padding: 16, marginBottom: 20, textAlign: "center" }}>
+              <div style={{ fontSize: 12, color: dark ? "#fbbf24" : "#92400e", fontWeight: 600, marginBottom: 6 }}>FORMULA</div>
+              <div style={{ fontFamily: "monospace", fontSize: 15, fontWeight: 700, color: dark ? "#fde68a" : "#78350f" }}>{lesson.content.formula}</div>
+            </div>
+
+            {/* Forms */}
+            <h3 style={{ fontWeight: 700, fontSize: 15, color: dark ? "#f1f5f9" : "#1e293b", marginBottom: 12 }}>Positive / Negative / Question</h3>
+            <div style={{ display: "grid", gap: 10, marginBottom: 24 }}>
+              {lesson.content.forms.map(f => (
+                <div key={f.type} style={{ background: dark ? "#0f172a" : "#f8fafc", borderRadius: 10, padding: "12px 16px", border: `1px solid ${dark ? "#334155" : "#e2e8f0"}` }}>
+                  <div style={{ fontWeight: 700, color: "#1d4ed8", fontSize: 12, marginBottom: 4 }}>{f.type}</div>
+                  <div style={{ fontFamily: "monospace", fontSize: 13, color: dark ? "#94a3b8" : "#64748b", marginBottom: 4 }}>{f.formula}</div>
+                  <div style={{ fontSize: 14, color: dark ? "#e2e8f0" : "#1e293b", fontWeight: 500 }}>"{f.example}"</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Examples */}
+            <h3 style={{ fontWeight: 700, fontSize: 15, color: dark ? "#f1f5f9" : "#1e293b", marginBottom: 12 }}>Examples / උදාහරණ</h3>
+            <div style={{ marginBottom: 24 }}>
+              {lesson.content.examples.map((ex, i) => (
+                <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 8, padding: "10px 14px", background: dark ? "#0f172a" : "#f0fdf4", borderRadius: 8 }}>
+                  <div style={{ fontSize: 14, color: dark ? "#86efac" : "#065f46", fontWeight: 500 }}>🇬🇧 {ex.en}</div>
+                  <div style={{ fontSize: 13, color: dark ? "#cbd5e1" : "#374151", fontFamily: "'Noto Sans Sinhala', sans-serif" }}>🇱🇰 {ex.si}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Notes */}
+            <h3 style={{ fontWeight: 700, fontSize: 15, color: dark ? "#f1f5f9" : "#1e293b", marginBottom: 10 }}>📌 Important Notes</h3>
+            <ul style={{ paddingLeft: 20, marginBottom: 24 }}>
+              {lesson.content.notes.map((n, i) => (
+                <li key={i} style={{ fontSize: 13, color: dark ? "#cbd5e1" : "#374151", marginBottom: 6, lineHeight: 1.6 }}>{n}</li>
+              ))}
+            </ul>
+
+            {/* Common Mistakes */}
+            <h3 style={{ fontWeight: 700, fontSize: 15, color: dark ? "#f1f5f9" : "#1e293b", marginBottom: 10 }}>⚠️ Common Mistakes</h3>
+            <div style={{ marginBottom: 16 }}>
+              {lesson.content.mistakes.map((m, i) => (
+                <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 8 }}>
+                  <div style={{ background: "#fee2e2", borderRadius: 8, padding: "8px 12px", fontSize: 13, color: "#991b1b" }}>❌ {m.wrong}</div>
+                  <div style={{ background: "#d1fae5", borderRadius: 8, padding: "8px 12px", fontSize: 13, color: "#065f46" }}>✅ {m.correct}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {tab === "exercises" && (
+          <ExercisePanel lesson={lesson} dark={dark} />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ExercisePanel({ lesson, dark }) {
+  const [answers, setAnswers] = useState({});
+  const [checked, setChecked] = useState(false);
+  const [score, setScore] = useState(null);
+
+  const allQuestions = [];
+  lesson.exercises.forEach((ex, ei) => {
+    ex.questions.forEach((q, qi) => {
+      allQuestions.push({ ...q, exIdx: ei, qIdx: qi, key: `${ei}-${qi}` });
+    });
+  });
+
+  function checkAnswers() {
+    let correct = 0;
+    allQuestions.forEach(q => {
+      const userAns = (answers[q.key] || "").trim().toLowerCase();
+      if (userAns === q.a.toLowerCase()) correct++;
+    });
+    setScore(correct);
+    setChecked(true);
+  }
+
+  return (
+    <div>
+      {lesson.exercises.map((ex, ei) => (
+        <div key={ei} style={{ marginBottom: 28 }}>
+          <h3 style={{ fontWeight: 700, fontSize: 14, color: dark ? "#f1f5f9" : "#1e293b", marginBottom: 8 }}>
+            {ex.type === "fill" ? "Fill in the Blanks" : "Multiple Choice Questions"}
+          </h3>
+          <p style={{ fontSize: 13, color: dark ? "#94a3b8" : "#64748b", marginBottom: 16 }}>{ex.instruction}</p>
+          {ex.questions.map((q, qi) => {
+            const key = `${ei}-${qi}`;
+            const isCorrect = checked && (answers[key] || "").trim().toLowerCase() === q.a.toLowerCase();
+            const isWrong = checked && (answers[key] || "").trim().toLowerCase() !== q.a.toLowerCase();
+            return (
+              <div key={qi} style={{ marginBottom: 14, padding: "12px 16px", background: dark ? "#0f172a" : "#f8fafc", borderRadius: 10, border: `1px solid ${checked ? (isCorrect ? "#22c55e" : "#ef4444") : (dark ? "#334155" : "#e2e8f0")}` }}>
+                <div style={{ fontSize: 13, color: dark ? "#cbd5e1" : "#374151", marginBottom: 10 }}>{qi + 1}. {q.q}</div>
+                {ex.type === "fill" ? (
+                  <input
+                    value={answers[key] || ""}
+                    onChange={e => setAnswers(prev => ({ ...prev, [key]: e.target.value }))}
+                    disabled={checked}
+                    placeholder="ඔබේ answer type කරන්න..."
+                    style={{
+                      width: "100%", padding: "8px 12px", borderRadius: 8,
+                      border: `1px solid ${checked ? (isCorrect ? "#22c55e" : "#ef4444") : "#cbd5e1"}`,
+                      background: checked ? (isCorrect ? "#f0fdf4" : "#fef2f2") : (dark ? "#1e293b" : "#fff"),
+                      color: dark ? "#f1f5f9" : "#1e293b", fontSize: 13, outline: "none",
+                    }}
+                  />
+                ) : (
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                    {q.options.map(opt => (
+                      <button key={opt} onClick={() => !checked && setAnswers(prev => ({ ...prev, [key]: opt }))} style={{
+                        padding: "8px 12px", borderRadius: 8, border: `1px solid ${
+                          answers[key] === opt
+                            ? (checked ? (isCorrect ? "#22c55e" : "#ef4444") : "#1d4ed8")
+                            : (dark ? "#334155" : "#e2e8f0")
+                        }`,
+                        background: answers[key] === opt ? (checked ? (isCorrect ? "#f0fdf4" : "#fef2f2") : "#eff6ff") : (dark ? "#1e293b" : "#fff"),
+                        color: dark ? "#f1f5f9" : "#374151", fontSize: 13, cursor: checked ? "default" : "pointer", textAlign: "left",
+                      }}>{opt}</button>
+                    ))}
+                  </div>
+                )}
+                {checked && (
+                  <div style={{ marginTop: 8, fontSize: 12, color: isCorrect ? "#065f46" : "#991b1b" }}>
+                    {isCorrect ? "✅ Correct!" : `❌ නිවැරදි: "${q.a}"`}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      ))}
+      {!checked ? (
+        <button onClick={checkAnswers} style={{
+          background: "#1d4ed8", color: "#fff", border: "none", padding: "12px 28px",
+          borderRadius: 10, fontWeight: 700, fontSize: 14, cursor: "pointer", width: "100%",
+        }}>✅ Check Answers</button>
+      ) : (
+        <div style={{
+          background: dark ? "#0f172a" : "#f0fdf4", borderRadius: 12, padding: 20, textAlign: "center",
+          border: "1px solid #22c55e",
+        }}>
+          <div style={{ fontSize: 28, fontWeight: 800, color: "#16a34a" }}>{score} / {allQuestions.length}</div>
+          <div style={{ fontSize: 14, color: dark ? "#86efac" : "#166534", marginTop: 4 }}>
+            {score === allQuestions.length ? "🎉 Perfect Score! Excellent!" : score >= allQuestions.length / 2 ? "👍 Good work! Keep practising!" : "💪 Try again! ඔබට කළ හැකිය!"}
+          </div>
+          <button onClick={() => { setChecked(false); setAnswers({}); setScore(null); }} style={{
+            background: "#1d4ed8", color: "#fff", border: "none", padding: "8px 20px",
+            borderRadius: 8, cursor: "pointer", fontSize: 13, marginTop: 12,
+          }}>🔄 Try Again</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function LessonsPage({ dark, search }) {
+  const [selectedLesson, setSelectedLesson] = useState(null);
+  const [category, setCategory] = useState("All");
+  const [level, setLevel] = useState("All");
+
+  useEffect(() => {
+    const handler = (e) => setSelectedLesson(e.detail);
+    window.addEventListener("selectLesson", handler);
+    return () => window.removeEventListener("selectLesson", handler);
+  }, []);
+
+  if (selectedLesson) {
+    return <LessonDetail lesson={selectedLesson} dark={dark} onBack={() => setSelectedLesson(null)} />;
+  }
+
+  const filtered = LESSONS.filter(l => {
+    const matchSearch = !search || l.title.toLowerCase().includes(search.toLowerCase()) || l.sinhala_title.includes(search);
+    const matchCat = category === "All" || l.category === category;
+    const matchLevel = level === "All" || l.level === level;
+    return matchSearch && matchCat && matchLevel;
+  });
+
+  return (
+    <div style={{ maxWidth: 1100, margin: "0 auto", padding: "32px 16px" }}>
+      <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 6, color: dark ? "#f1f5f9" : "#1e293b" }}>Grammar Lessons</h1>
+      <p style={{ color: dark ? "#94a3b8" : "#64748b", marginBottom: 24, fontFamily: "'Noto Sans Sinhala', sans-serif" }}>සිංහල medium Grammar lessons — Basic සිට Advanced දක්වා</p>
+
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 24 }}>
+        <div>
+          <div style={{ fontSize: 12, color: dark ? "#94a3b8" : "#64748b", marginBottom: 6 }}>Category</div>
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+            {CATEGORIES.map(c => (
+              <button key={c} onClick={() => setCategory(c)} style={{
+                background: category === c ? "#1d4ed8" : (dark ? "#1e293b" : "#f8fafc"),
+                color: category === c ? "#fff" : (dark ? "#cbd5e1" : "#475569"),
+                border: `1px solid ${dark ? "#334155" : "#e2e8f0"}`, borderRadius: 20,
+                padding: "4px 12px", fontSize: 12, cursor: "pointer",
+              }}>{c}</button>
+            ))}
+          </div>
+        </div>
+        <div>
+          <div style={{ fontSize: 12, color: dark ? "#94a3b8" : "#64748b", marginBottom: 6 }}>Level</div>
+          <div style={{ display: "flex", gap: 6 }}>
+            {LEVELS.map(l => (
+              <button key={l} onClick={() => setLevel(l)} style={{
+                background: level === l ? "#1d4ed8" : (dark ? "#1e293b" : "#f8fafc"),
+                color: level === l ? "#fff" : (dark ? "#cbd5e1" : "#475569"),
+                border: `1px solid ${dark ? "#334155" : "#e2e8f0"}`, borderRadius: 20,
+                padding: "4px 12px", fontSize: 12, cursor: "pointer",
+              }}>{l}</button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {filtered.length === 0 ? (
+        <div style={{ textAlign: "center", padding: 40, color: dark ? "#94a3b8" : "#64748b" }}>Lessons හමු නොවිණ.</div>
+      ) : (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16 }}>
+          {filtered.map(lesson => (
+            <div key={lesson.id} onClick={() => setSelectedLesson(lesson)} style={{
+              background: dark ? "#1e293b" : "#fff", borderRadius: 12, padding: 20,
+              border: `1px solid ${dark ? "#334155" : "#e2e8f0"}`, cursor: "pointer",
+              transition: "transform 0.15s, box-shadow 0.15s",
+            }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
+                <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                  <Badge label={lesson.category} />
+                  <Badge label={lesson.level} />
+                </div>
+                <span style={{ fontSize: 11, color: dark ? "#64748b" : "#94a3b8" }}>{lesson.unit}</span>
+              </div>
+              <h3 style={{ fontWeight: 700, fontSize: 15, margin: "0 0 6px", color: dark ? "#f1f5f9" : "#1e293b" }}>{lesson.title}</h3>
+              <p style={{ fontSize: 13, color: dark ? "#64748b" : "#94a3b8", margin: "0 0 4px", fontFamily: "'Noto Sans Sinhala', sans-serif" }}>{lesson.sinhala_title}</p>
+              <p style={{ fontSize: 12, color: dark ? "#94a3b8" : "#64748b", margin: "0 0 14px", lineHeight: 1.5, fontFamily: "'Noto Sans Sinhala', sans-serif" }}>{lesson.description}</p>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontSize: 12, color: "#1d4ed8", fontWeight: 600 }}>Read Lesson →</span>
+                <span style={{ fontSize: 11, color: dark ? "#64748b" : "#94a3b8" }}>{lesson.exercises.reduce((acc, e) => acc + e.questions.length, 0)} exercises</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ExercisesPage({ dark }) {
+  const [selectedLesson, setSelectedLesson] = useState(null);
+  if (selectedLesson) {
+    return (
+      <div style={{ maxWidth: 800, margin: "0 auto", padding: "24px 16px" }}>
+        <button onClick={() => setSelectedLesson(null)} style={{
+          background: "transparent", border: `1px solid ${dark ? "#475569" : "#cbd5e1"}`,
+          color: dark ? "#94a3b8" : "#64748b", borderRadius: 8, padding: "6px 14px",
+          cursor: "pointer", fontSize: 13, marginBottom: 20,
+        }}>← ආපසු</button>
+        <div style={{ background: dark ? "#1e293b" : "#fff", borderRadius: 14, padding: 28, border: `1px solid ${dark ? "#334155" : "#e2e8f0"}` }}>
+          <h2 style={{ fontWeight: 800, fontSize: 20, marginBottom: 6, color: dark ? "#f1f5f9" : "#1e293b" }}>{selectedLesson.title} — Exercises</h2>
+          <ExercisePanel lesson={selectedLesson} dark={dark} />
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div style={{ maxWidth: 1100, margin: "0 auto", padding: "32px 16px" }}>
+      <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 6, color: dark ? "#f1f5f9" : "#1e293b" }}>Practice Exercises</h1>
+      <p style={{ color: dark ? "#94a3b8" : "#64748b", marginBottom: 28, fontFamily: "'Noto Sans Sinhala', sans-serif" }}>ඔබේ grammar දැනුම test කරන්න</p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16 }}>
+        {LESSONS.map(lesson => {
+          const total = lesson.exercises.reduce((acc, e) => acc + e.questions.length, 0);
+          return (
+            <div key={lesson.id} onClick={() => setSelectedLesson(lesson)} style={{
+              background: dark ? "#1e293b" : "#fff", borderRadius: 12, padding: 20,
+              border: `1px solid ${dark ? "#334155" : "#e2e8f0"}`, cursor: "pointer",
+            }}>
+              <div style={{ display: "flex", gap: 8, marginBottom: 10, flexWrap: "wrap" }}>
+                <Badge label={lesson.category} />
+                <Badge label={lesson.level} />
+              </div>
+              <h3 style={{ fontWeight: 700, fontSize: 15, marginBottom: 6, color: dark ? "#f1f5f9" : "#1e293b" }}>{lesson.title}</h3>
+              <div style={{ display: "flex", gap: 16, marginTop: 12 }}>
+                <div style={{ fontSize: 12, color: dark ? "#94a3b8" : "#64748b" }}>
+                  <span style={{ fontWeight: 700, color: "#1d4ed8", fontSize: 16 }}>{total}</span> questions
+                </div>
+                <div style={{ fontSize: 12, color: dark ? "#94a3b8" : "#64748b" }}>
+                  <span style={{ fontWeight: 700, color: "#7c3aed", fontSize: 16 }}>{lesson.exercises.length}</span> exercise types
+                </div>
+              </div>
+              <button style={{
+                width: "100%", marginTop: 14, background: "#1d4ed8", color: "#fff",
+                border: "none", borderRadius: 8, padding: "9px", fontWeight: 700, fontSize: 13, cursor: "pointer",
+              }}>✏️ Start Exercises</button>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function AboutPage({ dark }) {
+  const card = (title, items) => (
+    <div style={{ background: dark ? "#1e293b" : "#fff", borderRadius: 12, padding: 24, border: `1px solid ${dark ? "#334155" : "#e2e8f0"}`, marginBottom: 16 }}>
+      <h3 style={{ fontWeight: 700, fontSize: 16, marginBottom: 16, color: dark ? "#f1f5f9" : "#1e293b" }}>{title}</h3>
+      <ul style={{ paddingLeft: 20, margin: 0 }}>
+        {items.map((item, i) => <li key={i} style={{ color: dark ? "#cbd5e1" : "#374151", fontSize: 14, marginBottom: 8, lineHeight: 1.6 }}>{item}</li>)}
+      </ul>
+    </div>
+  );
+  return (
+    <div style={{ maxWidth: 800, margin: "0 auto", padding: "40px 16px" }}>
+      <div style={{ textAlign: "center", marginBottom: 40 }}>
+        <div style={{ width: 80, height: 80, background: "linear-gradient(135deg,#1d4ed8,#06b6d4)", borderRadius: 20, margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32 }}>📚</div>
+        <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 10, color: dark ? "#f1f5f9" : "#1e293b" }}>Harry Perera's English Academy</h1>
+        <p style={{ fontSize: 16, color: dark ? "#94a3b8" : "#64748b", maxWidth: 500, margin: "0 auto", lineHeight: 1.7, fontFamily: "'Noto Sans Sinhala', sans-serif" }}>
+          "This academy is created to help Sri Lankan students learn English grammar through simple Sinhala explanations."
+        </p>
+      </div>
+      {card("🎯 Our Mission", [
+        "Easy English learning — සරලව ඉංග්‍රීසි ඉගෙනීම",
+        "Sinhala medium support — සිංහල භාෂාවෙන් support",
+        "Full grammar coverage — සම්පූර්ණ grammar syllabus",
+        "Student-friendly education — ශිෂ්‍යයාට ගැළපෙන ඉගෙනීම",
+      ])}
+      {card("🔭 Our Vision", [
+        "To make English grammar easy for every Sri Lankan student.",
+        "ශ්‍රී ලාංකික ශිෂ්‍ය ශිෂ්‍යාවන් හට ඉංග්‍රීසි grammar සරල කිරීම.",
+        "From Basic to Advanced — ආරම්භකයින් සිට advanced students දක්වා.",
+      ])}
+      {card("📖 Our Approach", [
+        "Sri Lankan names & places in all examples (Nimal, Kasuni, Kandy, Galle...)",
+        "Sinhala explanations for every rule",
+        "Interactive exercises with instant feedback",
+        "Common mistake analysis to help avoid errors",
+      ])}
+      <div style={{ background: "linear-gradient(135deg,#1d4ed8,#06b6d4)", borderRadius: 12, padding: 28, textAlign: "center", color: "#fff" }}>
+        <h3 style={{ fontWeight: 800, fontSize: 18, marginBottom: 8 }}>ශ්‍රී ලංකාවේ සෑම ශිෂ්‍යයෙකුටම</h3>
+        <p style={{ opacity: 0.9, fontFamily: "'Noto Sans Sinhala', sans-serif", fontSize: 15, margin: 0 }}>English grammar ඉගෙනීම සරල, සාර්ථක, සහ ප්‍රීතිමත් කිරීමේ අපේ ඉලක්කය.</p>
+      </div>
+    </div>
+  );
+}
+
+function ContactPage({ dark }) {
+  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [sent, setSent] = useState(false);
+  return (
+    <div style={{ maxWidth: 800, margin: "0 auto", padding: "40px 16px" }}>
+      <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 6, color: dark ? "#f1f5f9" : "#1e293b" }}>Contact Us</h1>
+      <p style={{ color: dark ? "#94a3b8" : "#64748b", marginBottom: 32, fontFamily: "'Noto Sans Sinhala', sans-serif" }}>ඔබේ ප්‍රශ්න, යෝජනා, හෝ feedback යවන්න</p>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 300px", gap: 24, flexWrap: "wrap" }}>
+        <div style={{ background: dark ? "#1e293b" : "#fff", borderRadius: 14, padding: 28, border: `1px solid ${dark ? "#334155" : "#e2e8f0"}` }}>
+          {sent ? (
+            <div style={{ textAlign: "center", padding: 40 }}>
+              <div style={{ fontSize: 48 }}>✅</div>
+              <h3 style={{ color: dark ? "#f1f5f9" : "#1e293b", marginTop: 16 }}>Message Sent!</h3>
+              <p style={{ color: dark ? "#94a3b8" : "#64748b", fontFamily: "'Noto Sans Sinhala', sans-serif" }}>ඔබේ message ලැබිණ. ඉක්මනින් reply කරනු ඇත.</p>
+              <button onClick={() => { setSent(false); setForm({ name: "", email: "", phone: "", message: "" }); }} style={{ background: "#1d4ed8", color: "#fff", border: "none", borderRadius: 8, padding: "10px 20px", cursor: "pointer", fontSize: 14 }}>Send Another</button>
+            </div>
+          ) : (
+            <div>
+              {[["name", "ඔබේ නම (Name)"], ["email", "Email Address"], ["phone", "Phone Number"]].map(([field, label]) => (
+                <div key={field} style={{ marginBottom: 16 }}>
+                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6, color: dark ? "#cbd5e1" : "#374151", fontFamily: "'Noto Sans Sinhala', sans-serif" }}>{label}</label>
+                  <input
+                    type={field === "email" ? "email" : "text"}
+                    value={form[field]}
+                    onChange={e => setForm(p => ({ ...p, [field]: e.target.value }))}
+                    style={{
+                      width: "100%", padding: "10px 14px", borderRadius: 8,
+                      border: `1px solid ${dark ? "#475569" : "#cbd5e1"}`,
+                      background: dark ? "#0f172a" : "#f8fafc",
+                      color: dark ? "#f1f5f9" : "#1e293b", fontSize: 14, outline: "none", boxSizing: "border-box",
+                    }}
+                  />
+                </div>
+              ))}
+              <div style={{ marginBottom: 20 }}>
+                <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6, color: dark ? "#cbd5e1" : "#374151", fontFamily: "'Noto Sans Sinhala', sans-serif" }}>ඔබේ Message</label>
+                <textarea
+                  rows={4} value={form.message}
+                  onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
+                  style={{
+                    width: "100%", padding: "10px 14px", borderRadius: 8,
+                    border: `1px solid ${dark ? "#475569" : "#cbd5e1"}`,
+                    background: dark ? "#0f172a" : "#f8fafc",
+                    color: dark ? "#f1f5f9" : "#1e293b", fontSize: 14, outline: "none",
+                    resize: "vertical", boxSizing: "border-box",
+                  }}
+                />
+              </div>
+              <button onClick={() => setSent(true)} style={{ width: "100%", background: "#1d4ed8", color: "#fff", border: "none", borderRadius: 10, padding: "12px", fontWeight: 700, fontSize: 15, cursor: "pointer" }}>
+                📨 Send Message
+              </button>
+            </div>
+          )}
+        </div>
+        <div>
+          {[
+            { icon: "📍", label: "Location", value: "Sri Lanka" },
+            { icon: "📧", label: "Email", value: "harry@englishacademy.lk" },
+            { icon: "📞", label: "Phone", value: "+94 77 123 4567" },
+          ].map(c => (
+            <div key={c.label} style={{ background: dark ? "#1e293b" : "#fff", borderRadius: 12, padding: "16px 20px", marginBottom: 12, border: `1px solid ${dark ? "#334155" : "#e2e8f0"}`, display: "flex", gap: 14, alignItems: "center" }}>
+              <span style={{ fontSize: 24 }}>{c.icon}</span>
+              <div>
+                <div style={{ fontWeight: 600, fontSize: 12, color: dark ? "#94a3b8" : "#64748b" }}>{c.label}</div>
+                <div style={{ fontSize: 14, color: dark ? "#f1f5f9" : "#1e293b" }}>{c.value}</div>
+              </div>
+            </div>
+          ))}
+          <div style={{ background: dark ? "#1e293b" : "#fff", borderRadius: 12, padding: "16px 20px", border: `1px solid ${dark ? "#334155" : "#e2e8f0"}` }}>
+            <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 12, color: dark ? "#f1f5f9" : "#1e293b" }}>Social Media</div>
+            {[["📘 Facebook", "#1877f2"], ["▶️ YouTube", "#dc2626"], ["📸 Instagram", "#7c3aed"]].map(([name, color]) => (
+              <div key={name} style={{ padding: "6px 0", fontSize: 13, color, fontWeight: 500 }}>{name}</div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Footer({ dark, setPage }) {
+  return (
+    <footer style={{ background: dark ? "#0f172a" : "#1e3a5f", color: "#fff", padding: "40px 16px 20px" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 32, marginBottom: 32 }}>
+          <div>
+            <h3 style={{ fontWeight: 800, fontSize: 16, marginBottom: 12 }}>Harry Perera's English Academy</h3>
+            <p style={{ opacity: 0.7, fontSize: 13, lineHeight: 1.7, fontFamily: "'Noto Sans Sinhala', sans-serif" }}>සරල සිංහලෙන් English Grammar ඉගෙන ගනිමු. Sri Lankan students සඳහා.</p>
+          </div>
+          <div>
+            <h4 style={{ fontWeight: 700, fontSize: 14, marginBottom: 12, opacity: 0.9 }}>Quick Links</h4>
+            {[["home", "Home"], ["lessons", "Lessons"], ["exercises", "Exercises"], ["about", "About"], ["contact", "Contact"]].map(([id, label]) => (
+              <div key={id} onClick={() => setPage(id)} style={{ cursor: "pointer", fontSize: 13, opacity: 0.7, marginBottom: 6, transition: "opacity 0.2s" }}>{label}</div>
+            ))}
+          </div>
+          <div>
+            <h4 style={{ fontWeight: 700, fontSize: 14, marginBottom: 12, opacity: 0.9 }}>Lesson Categories</h4>
+            {CATEGORIES.filter(c => c !== "All").map(c => (
+              <div key={c} style={{ fontSize: 13, opacity: 0.7, marginBottom: 6 }}>{c}</div>
+            ))}
+          </div>
+        </div>
+        <div style={{ borderTop: "1px solid rgba(255,255,255,0.15)", paddingTop: 16, textAlign: "center", fontSize: 12, opacity: 0.6 }}>
+          © 2024 Harry Perera's English Academy. Sri Lanka 🇱🇰
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+export default function App() {
+  const [page, setPage] = useState("home");
+  const [dark, setDark] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const bg = dark ? "#0f172a" : "#f8fafc";
+  const color = dark ? "#f1f5f9" : "#1e293b";
+
+  return (
+    <div style={{ background: bg, color, minHeight: "100vh", fontFamily: "'Segoe UI', 'Noto Sans Sinhala', sans-serif" }}>
+      <Nav page={page} setPage={setPage} dark={dark} setDark={setDark} search={search} setSearch={setSearch} />
+      {page === "home" && <HomePage setPage={setPage} dark={dark} />}
+      {page === "lessons" && <LessonsPage dark={dark} search={search} />}
+      {page === "exercises" && <ExercisesPage dark={dark} />}
+      {page === "about" && <AboutPage dark={dark} />}
+      {page === "contact" && <ContactPage dark={dark} />}
+      <Footer dark={dark} setPage={setPage} />
+    </div>
+  );
+}
